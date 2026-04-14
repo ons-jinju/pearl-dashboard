@@ -277,7 +277,7 @@ with tab2:
     """, unsafe_allow_html=True)
     df_batch = pd.DataFrame(BATCH)
     st.dataframe(
-        df_batch.style.applymap(
+        df_batch.style.map(
             lambda v: "background:#ffe8e8;color:#c0392b;font-weight:bold;" if v=="미복구" else "",
             subset=["상태"]
         ),
@@ -319,7 +319,7 @@ with tab3:
 
     st.caption(f"총 {len(disp)}건 (필터: {st.session_state.rfilt})")
     st.dataframe(
-        disp.style.applymap(
+        disp.style.map(
             lambda v: ("background:#ffe8e8;color:#c0392b;font-weight:bold;" if v=="미복구"
                        else "background:#d6f5e8;color:#1a7a50;font-weight:bold;" if v=="복구" else ""),
             subset=["상태"]
@@ -343,11 +343,11 @@ with tab4:
     st.markdown("<br>", unsafe_allow_html=True)
     df_rep = pd.DataFrame(REP)
     st.dataframe(
-        df_rep.style.applymap(
+        df_rep.style.map(
             lambda v: ("background:#fff0d6;color:#b45309;" if "Legacy" in str(v)
                        else "background:#dbeeff;color:#1a5c8a;" if v=="MIBOS" else ""),
             subset=["시스템구분"]
-        ).applymap(
+        ).map(
             lambda v: "color:#e05c5c;font-weight:bold;" if isinstance(v,int) and v>=3 else "",
             subset=["경과일"]
         ),
@@ -369,7 +369,7 @@ with tab5:
     st.markdown("<br>", unsafe_allow_html=True)
     df_gr = pd.DataFrame(GREMS)
     st.dataframe(
-        df_gr.style.applymap(
+        df_gr.style.map(
             lambda v: ("background:#ffe8e8;color:#c0392b;font-weight:bold;" if v=="Critical"
                        else "background:#fff0d6;color:#b45309;font-weight:bold;" if v=="OOS" else ""),
             subset=["알람등급"]
