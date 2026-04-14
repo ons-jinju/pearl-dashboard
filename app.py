@@ -23,7 +23,7 @@ html, body, [class*="css"] { font-family: 'Noto Sans KR', sans-serif; }
     box-shadow: 0 2px 10px rgba(100,160,220,0.12);
     margin-bottom: 4px;
 }
-.kpi-val { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.kpi-val { font-size: 18px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
 .kpi-label { font-size: 11px; color: #7aabcc; margin-top: 3px; }
 .info-bar {
     background: #f0f8ff;
@@ -207,7 +207,7 @@ with tab1:
         ))
         fig.update_layout(title="복구 / 미복구 현황",
             title_font=dict(size=14,color="#1a5c8a"),
-            height=260, margin=dict(t=40,b=10,l=10,r=10),
+            height=200, margin=dict(t=40,b=10,l=10,r=10),
             legend=dict(orientation="h",y=-0.05),
             paper_bgcolor="#fff", plot_bgcolor="#fff")
         st.plotly_chart(fig, use_container_width=True)
@@ -220,7 +220,7 @@ with tab1:
         ))
         fig2.update_layout(title="고장구분별 현황",
             title_font=dict(size=14,color="#1a5c8a"),
-            height=260, margin=dict(t=40,b=10,l=10,r=10),
+            height=200, margin=dict(t=40,b=10,l=10,r=10),
             xaxis=dict(showgrid=False), yaxis=dict(gridcolor="rgba(150,200,240,0.2)"),
             paper_bgcolor="#fff", plot_bgcolor="#fff")
         st.plotly_chart(fig2, use_container_width=True)
@@ -232,7 +232,7 @@ with tab1:
         fig3.add_trace(go.Bar(name="LTE", x=cats, y=C["lte_vals"], marker_color="#f5a623"))
         fig3.update_layout(title="5G / LTE 고장구분 비교",
             title_font=dict(size=14,color="#1a5c8a"),
-            barmode="group", height=260, margin=dict(t=40,b=10,l=10,r=10),
+            barmode="group", height=200, margin=dict(t=40,b=10,l=10,r=10),
             xaxis=dict(showgrid=False), yaxis=dict(gridcolor="rgba(150,200,240,0.2)"),
             legend=dict(orientation="h",y=1.1),
             paper_bgcolor="#fff", plot_bgcolor="#fff")
@@ -245,7 +245,7 @@ with tab1:
         ))
         fig4.update_layout(title="장비 중분류별 고장",
             title_font=dict(size=14,color="#1a5c8a"),
-            height=260, margin=dict(t=40,b=10,l=10,r=10),
+            height=200, margin=dict(t=40,b=10,l=10,r=10),
             xaxis=dict(gridcolor="rgba(150,200,240,0.2)"),
             yaxis=dict(showgrid=False,autorange="reversed"),
             paper_bgcolor="#fff", plot_bgcolor="#fff")
@@ -260,7 +260,7 @@ with tab1:
     ))
     fig5.update_layout(title="월별 고장 발생 추이 (실건수)",
         title_font=dict(size=14,color="#1a5c8a"),
-        height=220, margin=dict(t=40,b=10,l=10,r=10),
+        height=180, margin=dict(t=40,b=10,l=10,r=10),
         xaxis=dict(showgrid=False), yaxis=dict(gridcolor="rgba(150,200,240,0.2)"),
         paper_bgcolor="#fff", plot_bgcolor="#fff")
     st.plotly_chart(fig5, use_container_width=True)
@@ -281,7 +281,7 @@ with tab2:
             lambda v: "background:#ffe8e8;color:#c0392b;font-weight:bold;" if v=="미복구" else "",
             subset=["상태"]
         ),
-        use_container_width=True, height=500
+        use_container_width=True, height=350
     )
 
 # ══ TAB3 ══════════════════════════════════════════════════════════
@@ -324,7 +324,7 @@ with tab3:
                        else "background:#d6f5e8;color:#1a7a50;font-weight:bold;" if v=="복구" else ""),
             subset=["상태"]
         ),
-        use_container_width=True, height=560
+        use_container_width=True, height=400
     )
 
 # ══ TAB4 ══════════════════════════════════════════════════════════
@@ -351,7 +351,7 @@ with tab4:
             lambda v: "color:#e05c5c;font-weight:bold;" if isinstance(v,int) and v>=3 else "",
             subset=["경과일"]
         ),
-        use_container_width=True, height=500
+        use_container_width=True, height=350
     )
 
 # ══ TAB5 ══════════════════════════════════════════════════════════
@@ -374,7 +374,7 @@ with tab5:
                        else "background:#fff0d6;color:#b45309;font-weight:bold;" if v=="OOS" else ""),
             subset=["알람등급"]
         ),
-        use_container_width=True, height=480
+        use_container_width=True, height=350
     )
 
 st.markdown("""
