@@ -293,29 +293,40 @@ with tab1:
     else:
         df_batch['알람'] = df_batch['알람'].fillna('').astype(str).replace('nan', '')
 
-    disp = df_batch[[
-        '구분','발생시각','장비명','Port','알람','시스템','시군구',
-        '고장구분','고장구분(중분류)','다발','복구/미복구 상세내역'
-    ]].copy()
-    disp.columns = ['구분','발생일시','장비명','Port','알람','시스템','시군구',
-                    '고장구분','중분류','다발','복구사유/상세내역']
+    # 모바일 최적화 카드 리스트 (장비명·Port·알람만 표시)
+    STATUS_STYLE = {
+        '미복구': ('badge-red',   '#ffe8e8', '#c0392b'),
+        '점검중': ('badge-orange', '#fff0d6', '#b45309'),
+        '신규':   ('badge-blue',  '#dbeeff', '#1a5c8a'),
+        '복구':   ('badge-green', '#d6f5e8', '#1a7a50'),
+    }
 
-    def style_batch(v):
-        if v == '미복구': return "background:#ffe8e8;color:#c0392b;font-weight:bold;"
-        if v == '점검중': return "background:#fff0d6;color:#b45309;font-weight:bold;"
-        if v == '신규':   return "background:#dbeeff;color:#1a5c8a;font-weight:bold;"
-        if v == '복구':   return "background:#d6f5e8;color:#1a7a50;font-weight:bold;"
-        return ""
+    cards_html = '<div style="display:flex;flex-direction:column;gap:8px;padding:4px 0;">'
+    for _, row in df_batch.iterrows():
+        status    = row.get('구분', '')
+        equip     = str(row.get('장비명', '') or '')
+        port      = str(row.get('Port', '') or '')
+        alarm     = str(row.get('알람', '') or '').replace('nan', '').strip()
+        _, bg, fg = STATUS_STYLE.get(status, ('', '#f8f8f8', '#333'))
 
-    st.dataframe(
-        disp.style.map(style_batch, subset=["구분"]),
-        use_container_width=True, height=300,
-        column_config={
-            "알람": st.column_config.TextColumn("알람", width=200),
-            "장비명": st.column_config.TextColumn("장비명", width=200),
-            "복구사유/상세내역": st.column_config.TextColumn("복구사유/상세내역", width=200),
-        }
-    )
+        alarm_html = (
+            f'<div style="font-size:12px;color:#555;margin-top:4px;line-height:1.5;">{alarm}</div>'
+            if alarm else ''
+        )
+        cards_html += f"""
+        <div style="background:#fff;border-radius:10px;padding:10px 14px;
+                    border-left:4px solid {fg};
+                    box-shadow:0 1px 6px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="background:{bg};color:{fg};font-size:11px;font-weight:700;
+                         border-radius:10px;padding:2px 9px;">{status}</span>
+            <span style="font-size:13px;font-weight:700;color:#1a3a5c;">{equip}</span>
+          </div>
+          <div style="font-size:12px;color:#4a7a9b;font-family:'JetBrains Mono',monospace;">{port}</div>
+          {alarm_html}
+        </div>"""
+    cards_html += '</div>'
+    st.markdown(cards_html, unsafe_allow_html=True)
 
     # ── 수기 입력 섹션 (AL~AP열) ────────────────────────────────
     st.markdown('<div style="font-size:14px;font-weight:700;color:#1a5c8a;margin:16px 0 8px 0;">✏️ 작업 내용 입력</div>', unsafe_allow_html=True)
