@@ -1,0 +1,26 @@
+name: test9999
+entrypoint: exec gunicorn --bind 0:$PORT --workers 8 --threads 100 --timeout 0 app:app
+description: |
+  test9999
+service_type: python-flask
+properties:
+- revision: master
+  ingress:
+    path: /test9999
+  image:
+    from: 'public.ecr.aws/docker/library/python:3.9-slim'
+  #container:
+  #  livenessProbe:
+  #    httpGet:
+  #      path: /test9999/
+  #    initialDelaySeconds: 180
+  #    periodSeconds: 60
+  #    successThreshold: 1
+  #    failureThreshold: 2
+  #    timeoutSeconds: 5
+  cronjobs:
+  - name: test
+    # https://crontab.guru/#0_0_1_2_* 에서 크론탭 설명 확인 가능합니다.
+    schedule: '0 0 1 2 *'
+    data: ''
+    uri: '/test9999'
